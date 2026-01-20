@@ -1,0 +1,51 @@
+# Sampled BSQ data (too large for git, regenerate with prepare_sampled_data.py)
+dependencies/condistfl-trees/tree_bsq_chips_sampled/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Docker
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Domino generated files (regenerated on build)
+.domino/compiled_metadata.json
+.domino/dependencies_map.json
+
+# Training outputs
+workspace/
+*.pt
+*.pth
+
+# Temporary files
+*.tmp
+*.bak
+
+# Build and setup documentation (generated)
+BUILD_COMPLETE.md
+SETUP_SUMMARY.md

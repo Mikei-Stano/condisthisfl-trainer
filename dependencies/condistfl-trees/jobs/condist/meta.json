@@ -1,0 +1,11 @@
+{
+  "name": "tree-classification-condist",
+  "resource_spec": {},
+  "min_clients": 3,
+  "deploy_map": {
+    "server": ["server"],
+    "site-1": ["site-1"],
+    "site-2": ["site-2"],
+    "site-3": ["site-3"]
+  }
+}

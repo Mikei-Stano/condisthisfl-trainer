@@ -1,0 +1,141 @@
+{
+  "name": "CondistFLTreesPiece",
+  "dependency": {
+    "dockerfile": "Dockerfile_condistfl_trees"
+  },
+  "tags": [
+    "Hyperspectral Imaging",
+    "Tree Classification",
+    "Federated Learning",
+    "Training",
+    "Deep Learning",
+    "Remote Sensing"
+  ],
+  "style": {
+    "node_label": "CondistFL Trees",
+    "node_type": "default",
+    "node_style": {
+      "backgroundColor": "#4CAF50"
+    },
+    "useIcon": true,
+    "icon_class_name": "fas fa-tree"
+  },
+  "description": "Trains a federated learning model for tree height classification from hyperspectral BSQ imagery using CondistFL framework. Coordinates training across 3 clients (site-1, site-2, site-3) using NVFlare with ConDist loss for class specialization.",
+  "input_schema": {
+    "title": "InputModel",
+    "type": "object",
+    "properties": {
+      "num_rounds": {
+        "title": "Num Rounds",
+        "description": "Number of federated learning rounds",
+        "default": 50,
+        "type": "integer",
+        "from_upstream": "never"
+      },
+      "steps_per_round": {
+        "title": "Steps Per Round",
+        "description": "Training steps per round",
+        "default": 100,
+        "type": "integer",
+        "from_upstream": "never"
+      },
+      "clients": {
+        "title": "Clients",
+        "description": "Comma-separated list of client names (site-1, site-2, site-3)",
+        "default": "site-1,site-2,site-3",
+        "type": "string",
+        "from_upstream": "never"
+      },
+      "gpus": {
+        "title": "Gpus",
+        "description": "Comma-separated GPU IDs to use (one per client)",
+        "default": "0,1,2",
+        "type": "string",
+        "from_upstream": "never"
+      },
+      "workspace_dir": {
+        "title": "Workspace Dir",
+        "description": "Directory to save training workspace and results",
+        "default": "/app/workspace",
+        "type": "string",
+        "from_upstream": "never"
+      }
+    },
+    "description": "CondistFL Tree Classification Trainer input parameters"
+  },
+  "output_schema": {
+    "title": "OutputModel",
+    "type": "object",
+    "properties": {
+      "workspace_dir": {
+        "title": "Workspace Dir",
+        "description": "Directory containing training results and models",
+        "type": "string"
+      },
+      "best_global_model_path": {
+        "title": "Best Global Model Path",
+        "description": "Path to the best global model checkpoint",
+        "type": "string"
+      },
+      "global_model_path": {
+        "title": "Global Model Path",
+        "description": "Path to the final global model checkpoint",
+        "type": "string"
+      },
+      "best_local_models": {
+        "title": "Best Local Models",
+        "description": "Paths to best local models for each client site",
+        "default": {},
+        "type": "object",
+        "additionalProperties": {
+          "type": "string"
+        }
+      },
+      "training_complete": {
+        "title": "Training Complete",
+        "description": "Whether training completed successfully",
+        "type": "boolean"
+      },
+      "num_rounds_completed": {
+        "title": "Num Rounds Completed",
+        "description": "Number of federated learning rounds completed",
+        "type": "integer"
+      },
+      "validation_metrics": {
+        "title": "Validation Metrics",
+        "description": "Summary of validation metrics (accuracy, loss, etc.) per client",
+        "default": {},
+        "type": "object",
+        "additionalProperties": {
+          "type": "number"
+        }
+      },
+      "message": {
+        "title": "Message",
+        "description": "Status message about training completion",
+        "type": "string"
+      }
+    },
+    "required": [
+      "workspace_dir",
+      "best_global_model_path",
+      "global_model_path",
+      "training_complete",
+      "num_rounds_completed",
+      "message"
+    ],
+    "description": "CondistFL Tree Classification Trainer output"
+  },
+  "container_resources": {
+    "requests": {
+      "cpu": 4000,
+      "memory": 8192
+    },
+    "limits": {
+      "cpu": 16000,
+      "memory": 32768
+    },
+    "use_gpu": true,
+    "shm_size": 8192
+  }
+}

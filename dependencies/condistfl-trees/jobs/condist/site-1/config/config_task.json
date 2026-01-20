@@ -1,0 +1,30 @@
+{
+  "classes": [
+    "nizka_vegetacia",
+    "stredna_vegetacia",
+    "vysoka_vegetacia"
+  ],
+
+  "condist_config": {
+    "foreground": [0],
+    "background": [1, 2],
+
+    "temperature": 2.0,
+    "weight_schedule_range": [0.0, 0.1]
+  },
+
+  "model": {
+    "name": "SmallConvNet",
+    "args": {
+      "in_channels": 50,
+      "n_classes": 3
+    }
+  },
+
+  "training": {
+    "lr": 5e-4,
+    "max_steps": 10000,
+    "max_rounds": 20,
+    "grad_clip_norm": 1.0
+  }
+}

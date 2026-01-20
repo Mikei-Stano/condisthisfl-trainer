@@ -1,0 +1,5 @@
+[repository]
+REGISTRY_NAME = "ghcr.io/mikei-stano"
+REPOSITORY_NAME = "condisthisfl-trainer"
+REPOSITORY_LABEL = "CondistFL Tree Classification Trainer"
+VERSION = "v0.0.1"

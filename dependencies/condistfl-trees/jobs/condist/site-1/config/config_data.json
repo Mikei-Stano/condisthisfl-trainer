@@ -1,0 +1,15 @@
+{
+  "data_root": "../tree_bsq_chips",
+  "train_datalist": "config/train_datalist.csv",
+  "val_datalist": "config/val_datalist.csv",
+
+  "seed": 123,
+
+  "force_k": 50,
+  "target_hw": [32, 32],
+
+  "data_loader": {
+    "batch_size": 32,
+    "num_workers": 4
+  }
+}

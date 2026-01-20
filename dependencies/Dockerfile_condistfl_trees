@@ -1,0 +1,40 @@
+FROM nvcr.io/nvidia/pytorch:24.12-py3
+
+# Install Python dependencies including domino
+RUN pip install "pip==25.3" && \
+    pip install "nvflare==2.6.2" \
+        "torch>=2.0.0" \
+        "numpy>=1.21.0" \
+        "pandas>=1.3.0" \
+        "tqdm==4.67.1" \
+        "tensorboard==2.16.2" \
+        "prettytable==3.17.0" \
+        "ruamel.yaml==0.18.16" \
+        "codecarbon==2.3.0" \
+        "domino-py[cli]>=0.9.0"
+
+# Set working directory
+WORKDIR /app
+
+# Copy the condistfl-trees source code
+COPY dependencies/condistfl-trees/src /app/src
+COPY dependencies/condistfl-trees/run_validate.py /app/run_validate.py
+
+# Copy the jobs configuration
+COPY dependencies/condistfl-trees/jobs /app/jobs
+
+# Copy the sampled BSQ data for training (with datalists)
+COPY dependencies/condistfl-trees/tree_bsq_chips_sampled /app/tree_bsq_chips_sampled
+
+# Create workspace directory
+RUN mkdir -p /app/workspace
+
+# Copy Domino metadata (required for domino CLI)
+COPY .domino /app/domino/pieces_repository/.domino
+COPY pieces /app/domino/pieces_repository/pieces
+
+# Set Python path to include src directory
+ENV PYTHONPATH="/app/src:${PYTHONPATH}"
+
+# Default command (will be overridden by Domino)
+CMD ["python"]
