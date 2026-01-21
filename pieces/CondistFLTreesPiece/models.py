@@ -37,29 +37,35 @@ class OutputModel(BaseModel):
     """
     CondistFL Tree Classification Training Output Model
     """
-    workspace_dir: str = Field(
+    workspace_dir: Optional[str] = Field(
+        default=None,
         description="Directory containing training results and models"
     )
-    best_global_model_path: str = Field(
+    best_global_model_path: Optional[str] = Field(
+        default=None,
         description="Path to the best global model checkpoint"
     )
-    global_model_path: str = Field(
+    global_model_path: Optional[str] = Field(
+        default=None,
         description="Path to the final global model checkpoint"
     )
-    best_local_models: Dict[str, str] = Field(
+    best_local_models: Optional[Dict[str, str]] = Field(
         description="Paths to best local models for each client site",
         default_factory=dict
     )
-    training_complete: bool = Field(
+    training_complete: Optional[bool] = Field(
+        default=False,
         description="Whether training completed successfully"
     )
-    num_rounds_completed: int = Field(
+    num_rounds_completed: Optional[int] = Field(
+        default=0,
         description="Number of federated learning rounds completed"
     )
-    validation_metrics: Dict[str, float] = Field(
+    validation_metrics: Optional[Dict[str, float]] = Field(
         description="Summary of validation metrics (accuracy, loss, etc.) per client",
         default_factory=dict
     )
-    message: str = Field(
+    message: Optional[str] = Field(
+        default="",
         description="Status message about training completion"
     )
