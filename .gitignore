@@ -33,9 +33,10 @@ ENV/
 .DS_Store
 Thumbs.db
 
-# Domino files - keep compiled_metadata.json for repository recognition
-# Only ignore the dependencies map which is regenerated on build
-.domino/dependencies_map.json
+# Domino files - keep both for repository recognition
+# These are needed for Domino UI to discover and load pieces
+# .domino/compiled_metadata.json
+# .domino/dependencies_map.json
 
 # Training outputs
 workspace/

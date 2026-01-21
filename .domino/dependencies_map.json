@@ -1,0 +1,13 @@
+{
+    "group0": {
+        "dependency": {
+            "dockerfile": "Dockerfile_condistfl_trees",
+            "requirements_file": null
+        },
+        "pieces": [
+            "CondistFLTreesPiece"
+        ],
+        "secrets": [],
+        "source_image": "ghcr.io/ghcr.io/mikei-stano/condisthisfl-trainer:v0.0.1-group0"
+    }
+}
