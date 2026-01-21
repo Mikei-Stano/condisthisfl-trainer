@@ -1,0 +1,147 @@
+{
+    "CondistFLTreesPiece": {
+        "name": "CondistFLTreesPiece",
+        "dependency": {
+            "dockerfile": "Dockerfile_condistfl_trees",
+            "requirements_file": null
+        },
+        "tags": [
+            "Hyperspectral Imaging",
+            "Tree Classification",
+            "Federated Learning",
+            "Training",
+            "Deep Learning",
+            "Remote Sensing"
+        ],
+        "style": {
+            "node_label": "CondistFL Trees",
+            "node_type": "default",
+            "node_style": {
+                "backgroundColor": "#4CAF50"
+            },
+            "useIcon": true,
+            "icon_class_name": "fas fa-tree",
+            "iconStyle": {
+                "cursor": "pointer"
+            }
+        },
+        "description": "Trains a federated learning model for tree height classification from hyperspectral BSQ imagery using CondistFL framework. Coordinates training across 3 clients (site-1, site-2, site-3) using NVFlare with ConDist loss for class specialization.",
+        "input_schema": {
+            "description": "CondistFL Tree Classification Training Input Model",
+            "properties": {
+                "num_rounds": {
+                    "default": 50,
+                    "description": "Number of federated learning rounds",
+                    "from_upstream": "never",
+                    "title": "Num Rounds",
+                    "type": "integer"
+                },
+                "steps_per_round": {
+                    "default": 100,
+                    "description": "Training steps per round",
+                    "from_upstream": "never",
+                    "title": "Steps Per Round",
+                    "type": "integer"
+                },
+                "clients": {
+                    "default": "site-1,site-2,site-3",
+                    "description": "Comma-separated list of client names (site-1, site-2, site-3)",
+                    "from_upstream": "never",
+                    "title": "Clients",
+                    "type": "string"
+                },
+                "gpus": {
+                    "default": "0,1,2",
+                    "description": "Comma-separated GPU IDs to use (one per client)",
+                    "from_upstream": "never",
+                    "title": "Gpus",
+                    "type": "string"
+                },
+                "workspace_dir": {
+                    "default": "/app/workspace",
+                    "description": "Directory to save training workspace and results",
+                    "from_upstream": "never",
+                    "title": "Workspace Dir",
+                    "type": "string"
+                }
+            },
+            "title": "InputModel",
+            "type": "object"
+        },
+        "output_schema": {
+            "description": "CondistFL Tree Classification Training Output Model",
+            "properties": {
+                "workspace_dir": {
+                    "description": "Directory containing training results and models",
+                    "title": "Workspace Dir",
+                    "type": "string"
+                },
+                "best_global_model_path": {
+                    "description": "Path to the best global model checkpoint",
+                    "title": "Best Global Model Path",
+                    "type": "string"
+                },
+                "global_model_path": {
+                    "description": "Path to the final global model checkpoint",
+                    "title": "Global Model Path",
+                    "type": "string"
+                },
+                "best_local_models": {
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "Paths to best local models for each client site",
+                    "title": "Best Local Models",
+                    "type": "object"
+                },
+                "training_complete": {
+                    "description": "Whether training completed successfully",
+                    "title": "Training Complete",
+                    "type": "boolean"
+                },
+                "num_rounds_completed": {
+                    "description": "Number of federated learning rounds completed",
+                    "title": "Num Rounds Completed",
+                    "type": "integer"
+                },
+                "validation_metrics": {
+                    "additionalProperties": {
+                        "type": "number"
+                    },
+                    "description": "Summary of validation metrics (accuracy, loss, etc.) per client",
+                    "title": "Validation Metrics",
+                    "type": "object"
+                },
+                "message": {
+                    "description": "Status message about training completion",
+                    "title": "Message",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "workspace_dir",
+                "best_global_model_path",
+                "global_model_path",
+                "training_complete",
+                "num_rounds_completed",
+                "message"
+            ],
+            "title": "OutputModel",
+            "type": "object"
+        },
+        "container_resources": {
+            "requests": {
+                "cpu": 4000,
+                "memory": 8192
+            },
+            "limits": {
+                "cpu": 16000,
+                "memory": 32768
+            },
+            "use_gpu": true,
+            "shm_size": 8192
+        },
+        "secrets_schema": null,
+        "source_url": "https://github.com/Mikei-Stano/condisthisfl-trainer/tree/main/pieces/CondistFLTreesPiece"
+    }
+}

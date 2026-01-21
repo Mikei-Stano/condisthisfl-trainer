@@ -33,8 +33,8 @@ ENV/
 .DS_Store
 Thumbs.db
 
-# Domino generated files (regenerated on build)
-.domino/compiled_metadata.json
+# Domino files - keep compiled_metadata.json for repository recognition
+# Only ignore the dependencies map which is regenerated on build
 .domino/dependencies_map.json
 
 # Training outputs
