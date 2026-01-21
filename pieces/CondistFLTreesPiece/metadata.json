@@ -17,8 +17,8 @@
     "node_style": {
       "backgroundColor": "#4CAF50"
     },
-    "useIcon": true,
-    "icon_class_name": "fas fa-tree"
+    "useIcon": false,
+    "icon_class_name": ""
   },
   "description": "Trains a federated learning model for tree height classification from hyperspectral BSQ imagery using CondistFL framework. Coordinates training across 3 clients (site-1, site-2, site-3) using NVFlare with ConDist loss for class specialization.",
   "input_schema": {
@@ -116,14 +116,7 @@
         "type": "string"
       }
     },
-    "required": [
-      "workspace_dir",
-      "best_global_model_path",
-      "global_model_path",
-      "training_complete",
-      "num_rounds_completed",
-      "message"
-    ],
+    "required": [],
     "description": "CondistFL Tree Classification Trainer output"
   },
   "container_resources": {

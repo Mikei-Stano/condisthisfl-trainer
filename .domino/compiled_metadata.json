@@ -19,8 +19,8 @@
             "node_style": {
                 "backgroundColor": "#4CAF50"
             },
-            "useIcon": true,
-            "icon_class_name": "fas fa-tree",
+            "useIcon": false,
+            "icon_class_name": "",
             "iconStyle": {
                 "cursor": "pointer"
             }
