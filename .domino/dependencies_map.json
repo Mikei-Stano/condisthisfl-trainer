@@ -8,6 +8,6 @@
             "CondistFLTreesPiece"
         ],
         "secrets": [],
-        "source_image": "ghcr.io/mikei-stano/condisthisfl-trainer:v0.0.3-group0"
+        "source_image": "ghcr.io/ghcr.io/mikei-stano/condisthisfl-trainer:v0.0.6-group0"
     }
 }

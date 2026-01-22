@@ -116,7 +116,16 @@
         "type": "string"
       }
     },
-    "required": [],
+    "required": [
+      "workspace_dir",
+      "best_global_model_path",
+      "global_model_path",
+      "best_local_models",
+      "training_complete",
+      "num_rounds_completed",
+      "validation_metrics",
+      "message"
+    ],
     "description": "CondistFL Tree Classification Trainer output"
   },
   "container_resources": {

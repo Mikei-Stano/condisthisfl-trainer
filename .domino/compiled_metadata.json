@@ -72,114 +72,60 @@
             "description": "CondistFL Tree Classification Training Output Model",
             "properties": {
                 "workspace_dir": {
-                    "anyOf": [
-                        {
-                            "type": "string"
-                        },
-                        {
-                            "type": "null"
-                        }
-                    ],
-                    "default": null,
                     "description": "Directory containing training results and models",
-                    "title": "Workspace Dir"
+                    "title": "Workspace Dir",
+                    "type": "string"
                 },
                 "best_global_model_path": {
-                    "anyOf": [
-                        {
-                            "type": "string"
-                        },
-                        {
-                            "type": "null"
-                        }
-                    ],
-                    "default": null,
                     "description": "Path to the best global model checkpoint",
-                    "title": "Best Global Model Path"
+                    "title": "Best Global Model Path",
+                    "type": "string"
                 },
                 "global_model_path": {
-                    "anyOf": [
-                        {
-                            "type": "string"
-                        },
-                        {
-                            "type": "null"
-                        }
-                    ],
-                    "default": null,
                     "description": "Path to the final global model checkpoint",
-                    "title": "Global Model Path"
+                    "title": "Global Model Path",
+                    "type": "string"
                 },
                 "best_local_models": {
-                    "anyOf": [
-                        {
-                            "additionalProperties": {
-                                "type": "string"
-                            },
-                            "type": "object"
-                        },
-                        {
-                            "type": "null"
-                        }
-                    ],
+                    "additionalProperties": {
+                        "type": "string"
+                    },
                     "description": "Paths to best local models for each client site",
-                    "title": "Best Local Models"
+                    "title": "Best Local Models",
+                    "type": "object"
                 },
                 "training_complete": {
-                    "anyOf": [
-                        {
-                            "type": "boolean"
-                        },
-                        {
-                            "type": "null"
-                        }
-                    ],
-                    "default": false,
                     "description": "Whether training completed successfully",
-                    "title": "Training Complete"
+                    "title": "Training Complete",
+                    "type": "boolean"
                 },
                 "num_rounds_completed": {
-                    "anyOf": [
-                        {
-                            "type": "integer"
-                        },
-                        {
-                            "type": "null"
-                        }
-                    ],
-                    "default": 0,
                     "description": "Number of federated learning rounds completed",
-                    "title": "Num Rounds Completed"
+                    "title": "Num Rounds Completed",
+                    "type": "integer"
                 },
                 "validation_metrics": {
-                    "anyOf": [
-                        {
-                            "additionalProperties": {
-                                "type": "number"
-                            },
-                            "type": "object"
-                        },
-                        {
-                            "type": "null"
-                        }
-                    ],
+                    "additionalProperties": {
+                        "type": "number"
+                    },
                     "description": "Summary of validation metrics (accuracy, loss, etc.) per client",
-                    "title": "Validation Metrics"
+                    "title": "Validation Metrics",
+                    "type": "object"
                 },
                 "message": {
-                    "anyOf": [
-                        {
-                            "type": "string"
-                        },
-                        {
-                            "type": "null"
-                        }
-                    ],
-                    "default": "",
                     "description": "Status message about training completion",
-                    "title": "Message"
+                    "title": "Message",
+                    "type": "string"
                 }
             },
+            "required": [
+                "workspace_dir",
+                "best_global_model_path",
+                "global_model_path",
+                "training_complete",
+                "num_rounds_completed",
+                "message"
+            ],
             "title": "OutputModel",
             "type": "object"
         },
@@ -196,6 +142,6 @@
             "shm_size": 8192
         },
         "secrets_schema": null,
-        "source_url": "https://github.com/Mikei-Stano/condisthisfl-trainer/tree/main/pieces/CondistFLTreesPiece"
+        "source_url": "https://github.com/Mikei-Stano/condistfl-trainer/tree/main/pieces/CondistFLTreesPiece"
     }
 }
