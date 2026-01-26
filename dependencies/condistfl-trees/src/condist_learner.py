@@ -19,8 +19,6 @@ from pathlib import Path
 from typing import Dict, Literal, Optional
 
 import numpy as np
-# import wandb  # Disabled for Domino piece
-from codecarbon import EmissionsTracker
 from data import DataManager
 from model import get_model
 from prettytable import PrettyTable
@@ -64,9 +62,6 @@ class ConDistLearner(Learner):
         local_class_id: int,
         method: Literal["ConDist"] = "ConDist",
         device: str = "cuda:0",
-        # use_wandb: bool = False,  # Disabled for Domino piece
-        # wandb_project: str = "condistfl-trees",
-        # wandb_api_key: Optional[str] = None,
         seed: Optional[int] = None,
         max_retry: int = 1,
         train_task_name: str = AppConstants.TASK_TRAIN,
@@ -79,12 +74,6 @@ class ConDistLearner(Learner):
         self.aggregation_steps = aggregation_steps
         self.local_class_id = local_class_id
         self.device = device
-        # self.use_wandb = False  # Disabled for Domino piece
-        # self.wandb_project = wandb_project
-        # self.wandb_api_key = wandb_api_key
-        
-        # Power tracking
-        self.emissions_tracker = None
 
         self._method = method
         self._seed = seed
@@ -125,38 +114,7 @@ class ConDistLearner(Learner):
         # Create logger
         self.tb_logger = SummaryWriter(log_dir=prefix / "logs")
         
-        # Start power tracking
-        self.emissions_tracker = EmissionsTracker(
-            project_name=f"condistfl-client-{self.local_class_id}",
-            measure_power_secs=15,  # Measure every 15 seconds
-            save_to_file=False,  # Don't save to file, only track in memory
-            logging_logger=None,  # Disable codecarbon's own logging
-        )
-        self.emissions_tracker.start()
-        self.log_info(fl_ctx, "Power tracking started")
-        
-        # Initialize WandB - Disabled for Domino piece
-        # if self.use_wandb:
-        #     # Set API key if provided
-        #     if self.wandb_api_key:
-        #         os.environ["WANDB_API_KEY"] = self.wandb_api_key
-        #     
-        #     client_name = fl_ctx.get_identity_name()
-        #     class_names = ["nizka", "stredna", "vysoka"]
-        #     wandb.init(
-        #         project=self.wandb_project,
-        #         name=f"{client_name}",
-        #         tags=[f"client_{self.local_class_id}", class_names[self.local_class_id]],
-        #         config={
-        #             "method": self._method,
-        #             "local_class_id": self.local_class_id,
-        #             "aggregation_steps": self.aggregation_steps,
-        #             "model": task_config["model"]["name"],
-        #             "lr": task_config["training"]["lr"],
-        #             "device": self.device,
-        #         },
-        #         reinit=True,
-        #     )
+        self.log_info(fl_ctx, "ConDistLearner initialized successfully")
 
     def train(self, data: Shareable, fl_ctx: FLContext, abort_signal: Signal) -> Shareable:
         """
@@ -237,32 +195,12 @@ class ConDistLearner(Learner):
         self.log_info(fl_ctx, f"Validation metrics: {metrics}")
         for key, value in metrics.items():
             self.tb_logger.add_scalar(key, value, current_round)
-        
-        # Log to WandB - Disabled for Domino piece
-        # if self.use_wandb:
-        #     wandb_metrics = {f"train/{k}": v for k, v in metrics.items()}
-        #     wandb_metrics["train/round"] = current_round + 1
-        #     
-        #     # Add power consumption metrics if available
-        #     if self.emissions_tracker:
-        #         # Get current emissions data
-        #         emissions_data = self.emissions_tracker._prepare_emissions_data()
-        #         if emissions_data:
-        #             wandb_metrics["power/energy_consumed_kwh"] = emissions_data.energy_consumed
-        #             wandb_metrics["power/emissions_kg_co2"] = emissions_data.emissions
-        #             wandb_metrics["power/cpu_power_w"] = emissions_data.cpu_power
-        #             wandb_metrics["power/gpu_power_w"] = emissions_data.gpu_power
-        #             wandb_metrics["power/ram_power_w"] = emissions_data.ram_power
-        #     
-        #     wandb.log(wandb_metrics)
 
         # Save best model
         if metrics[self.key_metric] > self.best_metric:
             self.best_metric = metrics[self.key_metric]
             self.trainer.save_checkpoint(self.best_model_path, self.model)
             self.log_info(fl_ctx, f"New best model saved with {self.key_metric}={self.best_metric:.4f}")
-            if self.use_wandb:
-                wandb.log({"train/best_val_acc": self.best_metric})
 
         # Save last model
         self.trainer.save_checkpoint(self.last_model_path, self.model)
@@ -311,12 +249,6 @@ class ConDistLearner(Learner):
 
         # Log metrics
         self.log_info(fl_ctx, f"Validation metrics: {metrics}")
-        
-        # Log global model validation to WandB
-        if self.use_wandb:
-            wandb_metrics = {f"global/{k}": v for k, v in metrics.items()}
-            wandb_metrics["global/model"] = model_owner
-            wandb.log(wandb_metrics)
 
         # Create output DXO
         outgoing_dxo = DXO(data_kind=DataKind.METRICS, data=metrics)
@@ -335,19 +267,5 @@ class ConDistLearner(Learner):
         """Finalize the learner."""
         self.log_info(fl_ctx, "Finalizing learner")
         
-        # Stop power tracking and log final stats
-        if self.emissions_tracker:
-            try:
-                emissions = self.emissions_tracker.stop()
-                self.log_info(fl_ctx, f"Total energy consumed: {emissions:.6f} kWh")
-                if self.use_wandb and emissions:
-                    wandb.log({
-                        "power/total_energy_kwh": emissions,
-                    })
-            except Exception as e:
-                self.log_warning(fl_ctx, f"Failed to stop emissions tracker: {e}")
-        
         if self.tb_logger:
             self.tb_logger.close()
-        if self.use_wandb:
-            wandb.finish()

@@ -117,9 +117,13 @@ def read_bsq_chip(bsq_path: Path) -> np.ndarray:
 def find_bsq_with_meta(root: Path) -> pd.DataFrame:
     """Find all BSQ chips with metadata."""
     rows = []
-    for pdir in sorted(root.glob("P*")):
-        if not pdir.is_dir():
-            continue
+    # First, count total directories to process
+    parent_dirs = sorted([p for p in root.glob("P*") if p.is_dir()])
+    print(f"Found {len(parent_dirs)} parent directories to scan...")
+    
+    for pdir_idx, pdir in enumerate(parent_dirs, 1):
+        print(f"  Scanning {pdir.name} ({pdir_idx}/{len(parent_dirs)})...", end=" ", flush=True)
+        dir_count = 0
         for section in sorted(pdir.iterdir()):
             if not section.is_dir():
                 continue
@@ -149,6 +153,8 @@ def find_bsq_with_meta(root: Path) -> pd.DataFrame:
                         "lines": lines,
                         "samples": samples,
                     })
+                    dir_count += 1
+        print(f"found {dir_count} chips", flush=True)
     return pd.DataFrame(rows)
 
 

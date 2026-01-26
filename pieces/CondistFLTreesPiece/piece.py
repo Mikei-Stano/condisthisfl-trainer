@@ -79,9 +79,9 @@ class CondistFLTreesPiece(BasePiece):
                 timeout=7200  # 2 hour timeout
             )
             self.logger.info("Training completed successfully")
-            self.logger.debug(f"Training stdout: {result.stdout}")
+            self.logger.info(f"Training stdout:\n{result.stdout}")
             if result.stderr:
-                self.logger.debug(f"Training stderr: {result.stderr}")
+                self.logger.warning(f"Training stderr:\n{result.stderr}")
             
             training_complete = True
             

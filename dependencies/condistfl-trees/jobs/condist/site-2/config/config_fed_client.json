@@ -24,7 +24,8 @@
         "data_config": "config/config_data.json",
         "aggregation_steps": 100,
         "local_class_id": 1,
-        "method": "ConDist"
+        "method": "ConDist",
+        "device": "cuda:1"
       }
     }
   ]
