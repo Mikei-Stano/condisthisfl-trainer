@@ -54,11 +54,10 @@ class CondistFLTreesPiece(BasePiece):
         # Prepare the training command
         cmd = [
             "nvflare", "simulator",
+            str(jobs_dir.absolute()),
             "-w", str(workspace_path.absolute()),
             "-c", input_data.clients,
-            "-gpu", input_data.gpus,
-            "-n", str(input_data.num_rounds),
-            str(jobs_dir.absolute())
+            "-t", str(len(clients))
         ]
         
         # Set environment variable
