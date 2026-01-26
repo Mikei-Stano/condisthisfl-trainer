@@ -126,16 +126,5 @@
     ],
     "description": "CondistFL Tree Classification Trainer output"
   },
-  "container_resources": {
-    "requests": {
-      "cpu": 4000,
-      "memory": 8192
-    },
-    "limits": {
-      "cpu": 16000,
-      "memory": 32768
-    },
-    "use_gpu": true,
-    "shm_size": 8192
-  }
+  "source_url": "https://github.com/Mikei-Stano/condisthisfl-trainer/tree/main/pieces/CondistFLTreesPiece"
 }

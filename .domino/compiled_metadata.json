@@ -129,19 +129,7 @@
             "title": "OutputModel",
             "type": "object"
         },
-        "container_resources": {
-            "requests": {
-                "cpu": 4000,
-                "memory": 8192
-            },
-            "limits": {
-                "cpu": 16000,
-                "memory": 32768
-            },
-            "use_gpu": true,
-            "shm_size": 8192
-        },
-        "secrets_schema": null,
-        "source_url": "https://github.com/Mikei-Stano/condisthisfl-trainer/tree/main/pieces/CondistFLTreesPiece"
+        "source_url": "https://github.com/Mikei-Stano/condisthisfl-trainer/tree/main/pieces/CondistFLTreesPiece",
+        "secrets_schema": null
     }
 }
