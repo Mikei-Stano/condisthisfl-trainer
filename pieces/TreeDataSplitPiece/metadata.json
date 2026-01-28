@@ -19,5 +19,57 @@
         "node_label": "Split Data",
         "icon_class_name": "fa-solid:code-branch"
     },
+    "input_schema": {
+        "title": "InputModel",
+        "description": "Input parameters for splitting data across federated clients",
+        "type": "object",
+        "properties": {
+            "tree_samples": {
+                "title": "Tree Samples",
+                "description": "List of tree sample information from data loader",
+                "type": "array",
+                "items": {"type": "object"}
+            },
+            "n_clients": {
+                "title": "N Clients",
+                "description": "Number of federated learning clients",
+                "default": 3,
+                "type": "integer"
+            },
+            "val_split": {
+                "title": "Val Split",
+                "description": "Validation split ratio",
+                "default": 0.2,
+                "type": "number"
+            },
+            "client_names": {
+                "title": "Client Names",
+                "description": "List of client identifiers",
+                "default": ["site-1", "site-2", "site-3"],
+                "type": "array",
+                "items": {"type": "string"}
+            },
+            "output_dir": {
+                "title": "Output Dir",
+                "description": "Directory to save datalist CSV files",
+                "default": "/app/outputs/datalists",
+                "type": "string"
+            }
+        },
+        "required": ["tree_samples"]
+    },
+    "output_schema": {
+        "title": "OutputModel",
+        "description": "Client datalist paths for federated training",
+        "type": "object",
+        "properties": {
+            "client_datalists": {
+                "title": "Client Datalists",
+                "description": "Dictionary mapping client names to their train/val datalist paths",
+                "type": "object"
+            }
+        },
+        "required": ["client_datalists"]
+    },
     "source_url": "https://github.com/Mikei-Stano/condisthisfl-trainer"
 }

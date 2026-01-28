@@ -116,7 +116,6 @@
             "cpu": 100,
             "memory": "256Mi"
         },
-        "source_url": "https://github.com/Mikei-Stano/condisthisfl-trainer/tree/main/pieces/TreeDataSplitPiece",
         "input_schema": {
             "$defs": {
                 "TreeSampleInfo": {
@@ -250,6 +249,7 @@
             "title": "OutputModel",
             "type": "object"
         },
+        "source_url": "https://github.com/Mikei-Stano/condisthisfl-trainer/tree/main/pieces/TreeDataSplitPiece",
         "secrets_schema": null
     },
     "TreeClassifierTrainingPiece": {
@@ -486,7 +486,6 @@
             "cpu": 100,
             "memory": "256Mi"
         },
-        "source_url": "https://github.com/Mikei-Stano/condisthisfl-trainer/tree/main/pieces/TreePreprocessingPiece",
         "input_schema": {
             "description": "Tree Preprocessing Input Model",
             "properties": {
@@ -535,6 +534,7 @@
             "title": "OutputModel",
             "type": "object"
         },
+        "source_url": "https://github.com/Mikei-Stano/condisthisfl-trainer/tree/main/pieces/TreePreprocessingPiece",
         "secrets_schema": null
     },
     "TreeDataLoaderPiece": {
@@ -567,7 +567,6 @@
             "cpu": 100,
             "memory": "256Mi"
         },
-        "source_url": "https://github.com/Mikei-Stano/condisthisfl-trainer/tree/main/pieces/TreeDataLoaderPiece",
         "input_schema": {
             "description": "Tree Data Loader Input Model",
             "properties": {
@@ -707,6 +706,7 @@
             "title": "OutputModel",
             "type": "object"
         },
+        "source_url": "https://github.com/Mikei-Stano/condisthisfl-trainer/tree/main/pieces/TreeDataLoaderPiece",
         "secrets_schema": null
     }
 }
