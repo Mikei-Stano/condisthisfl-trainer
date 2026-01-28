@@ -1,0 +1,22 @@
+{
+    "name": "TreePreprocessingPiece",
+    "title": "Tree Preprocessing",
+    "description": "Placeholder for future BSQ hyperspectral preprocessing (normalization, augmentation, filtering). Currently passes data through unchanged.",
+    "dependency": {
+        "dockerfile": "Dockerfile_base"
+    },
+    "container_resources": {
+        "cpu": 100,
+        "memory": "256Mi"
+    },
+    "tags": [
+        "preprocessing",
+        "hyperspectral",
+        "placeholder"
+    ],
+    "style": {
+        "node_label": "Preprocess",
+        "icon_class_name": "fa-solid:filter"
+    },
+    "source_url": "https://github.com/Mikei-Stano/condisthisfl-trainer"
+}

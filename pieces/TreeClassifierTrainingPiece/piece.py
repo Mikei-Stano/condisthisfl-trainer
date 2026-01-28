@@ -6,11 +6,11 @@ from domino.base_piece import BasePiece
 from .models import InputModel, OutputModel
 
 
-class CondistFLTreesPiece(BasePiece):
+class TreeClassifierTrainingPiece(BasePiece):
     """
-    CondistFL Federated Learning Trainer for Tree Classification
+    Tree Classifier Training Piece
     
-    This piece trains a federated learning model for hyperspectral tree height
+    Trains a federated learning model for hyperspectral tree height
     classification using the CondistFL framework with NVFlare.
     
     The training process:

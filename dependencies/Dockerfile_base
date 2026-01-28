@@ -1,0 +1,25 @@
+# Lightweight base image for data processing pieces
+FROM python:3.10-slim
+
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    git \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Python dependencies for lightweight pieces
+RUN pip install --no-cache-dir \
+    domino-py \
+    pandas==2.0.3 \
+    numpy==1.24.3 \
+    matplotlib==3.7.2
+
+# Copy common models
+COPY pieces/common_models.py /app/common_models.py
+
+# Create directories
+RUN mkdir -p /app/outputs
+
+# Set environment
+ENV PYTHONUNBUFFERED=1

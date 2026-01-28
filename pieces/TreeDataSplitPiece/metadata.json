@@ -1,0 +1,23 @@
+{
+    "name": "TreeDataSplitPiece",
+    "title": "Tree Data Split",
+    "description": "Splits tree samples across federated learning clients and creates train/validation datalist CSVs for each client. Supports balanced distribution across clients.",
+    "dependency": {
+        "dockerfile": "Dockerfile_base"
+    },
+    "container_resources": {
+        "cpu": 100,
+        "memory": "256Mi"
+    },
+    "tags": [
+        "data-split",
+        "federated-learning",
+        "train-val-split",
+        "preprocessing"
+    ],
+    "style": {
+        "node_label": "Split Data",
+        "icon_class_name": "fa-solid:code-branch"
+    },
+    "source_url": "https://github.com/Mikei-Stano/condisthisfl-trainer"
+}

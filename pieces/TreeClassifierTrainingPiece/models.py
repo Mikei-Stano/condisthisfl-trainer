@@ -4,38 +4,28 @@ from typing import Optional, Dict
 
 class InputModel(BaseModel):
     """
-    CondistFL Tree Classification Training Input Model
+    Tree Classifier Training Input Model
     """
+    client_datalists: Dict[str, Dict[str, str]] = Field(
+        description="Dictionary mapping client names to their train/val datalist CSV paths. Example: {'site-1': {'train': 'site-1_train_datalist.csv', 'val': 'site-1_val_datalist.csv'}}"
+    )
     num_rounds: int = Field(
         default=50,
-        description="Number of federated learning rounds",
-        json_schema_extra={"from_upstream": "never"}
+        description="Number of federated learning rounds"
     )
     steps_per_round: int = Field(
         default=100,
-        description="Training steps per round",
-        json_schema_extra={"from_upstream": "never"}
-    )
-    clients: str = Field(
-        default="site-1,site-2,site-3",
-        description="Comma-separated list of client names (site-1, site-2, site-3)",
-        json_schema_extra={"from_upstream": "never"}
-    )
-    gpus: str = Field(
-        default="0,1,2",
-        description="Comma-separated GPU IDs to use (one per client)",
-        json_schema_extra={"from_upstream": "never"}
+        description="Training steps per round"
     )
     workspace_dir: str = Field(
         default="/app/workspace",
-        description="Directory to save training workspace and results",
-        json_schema_extra={"from_upstream": "never"}
+        description="Directory to save training workspace and results"
     )
 
 
 class OutputModel(BaseModel):
     """
-    CondistFL Tree Classification Training Output Model
+    Tree Classifier Training Output Model
     """
     workspace_dir: str = Field(
         description="Directory containing training results and models"

@@ -1,6 +1,259 @@
 {
-    "CondistFLTreesPiece": {
-        "name": "CondistFLTreesPiece",
+    "TreeInferencePiece": {
+        "name": "TreeInferencePiece",
+        "dependency": {
+            "dockerfile": "Dockerfile_condistfl_trees",
+            "requirements_file": null
+        },
+        "tags": [
+            "Inference",
+            "Prediction",
+            "Tree Classification",
+            "Hyperspectral"
+        ],
+        "style": {
+            "node_label": "Run Inference",
+            "node_type": "default",
+            "node_style": {
+                "backgroundColor": "#FF9800"
+            },
+            "useIcon": false,
+            "icon_class_name": "",
+            "iconStyle": {
+                "cursor": "pointer"
+            }
+        },
+        "description": "Runs inference on new hyperspectral BSQ files using trained tree height classification model. Loads PyTorch model and predicts tree height classes.",
+        "input_schema": {
+            "description": "Tree Inference Input Model",
+            "properties": {
+                "model_path": {
+                    "description": "Path to trained PyTorch model (.pt file)",
+                    "title": "Model Path",
+                    "type": "string"
+                },
+                "input_bsq_paths": {
+                    "description": "List of BSQ file paths to run inference on",
+                    "items": {
+                        "type": "string"
+                    },
+                    "title": "Input Bsq Paths",
+                    "type": "array"
+                },
+                "batch_size": {
+                    "default": 32,
+                    "description": "Inference batch size",
+                    "title": "Batch Size",
+                    "type": "integer"
+                }
+            },
+            "required": [
+                "model_path",
+                "input_bsq_paths"
+            ],
+            "title": "InputModel",
+            "type": "object"
+        },
+        "output_schema": {
+            "description": "Tree Inference Output Model",
+            "properties": {
+                "predictions": {
+                    "description": "List of predictions for each input file. Each dict contains: {'file': str, 'predicted_class': str, 'class_id': int, 'confidence': float}",
+                    "items": {
+                        "type": "object"
+                    },
+                    "title": "Predictions",
+                    "type": "array"
+                },
+                "predictions_csv": {
+                    "description": "Path to CSV file with all predictions",
+                    "title": "Predictions Csv",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "predictions",
+                "predictions_csv"
+            ],
+            "title": "OutputModel",
+            "type": "object"
+        },
+        "container_resources": {
+            "cpu": 2000,
+            "memory": "8192Mi",
+            "use_gpu": true
+        },
+        "source_url": "https://github.com/Mikei-Stano/condisthisfl-trainer/tree/main/pieces/TreeInferencePiece",
+        "secrets_schema": null
+    },
+    "TreeDataSplitPiece": {
+        "name": "TreeDataSplitPiece",
+        "dependency": {
+            "dockerfile": "Dockerfile_base",
+            "requirements_file": null
+        },
+        "tags": [
+            "data-split",
+            "federated-learning",
+            "train-val-split",
+            "preprocessing"
+        ],
+        "style": {
+            "node_label": "Split Data",
+            "node_type": "default",
+            "node_style": {
+                "backgroundColor": "#ebebeb"
+            },
+            "useIcon": true,
+            "icon_class_name": "fa-solid:code-branch",
+            "iconStyle": {
+                "cursor": "pointer"
+            }
+        },
+        "title": "Tree Data Split",
+        "description": "Splits tree samples across federated learning clients and creates train/validation datalist CSVs for each client. Supports balanced distribution across clients.",
+        "container_resources": {
+            "cpu": 100,
+            "memory": "256Mi"
+        },
+        "source_url": "https://github.com/Mikei-Stano/condisthisfl-trainer/tree/main/pieces/TreeDataSplitPiece",
+        "input_schema": {
+            "$defs": {
+                "TreeSampleInfo": {
+                    "description": "Information about a single tree sample",
+                    "properties": {
+                        "sample_id": {
+                            "description": "Unique identifier for the sample",
+                            "title": "Sample Id",
+                            "type": "string"
+                        },
+                        "bsq_path": {
+                            "description": "Path to BSQ hyperspectral file",
+                            "title": "Bsq Path",
+                            "type": "string"
+                        },
+                        "class_label": {
+                            "description": "Tree height class: nizka_vegetacia, stredna_vegetacia, or vysoka_vegetacia",
+                            "title": "Class Label",
+                            "type": "string"
+                        },
+                        "class_id": {
+                            "description": "Numeric class ID: 0=nizka, 1=stredna, 2=vysoka",
+                            "title": "Class Id",
+                            "type": "integer"
+                        },
+                        "project": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "default": null,
+                            "description": "Project ID (e.g., P101, P212)",
+                            "title": "Project"
+                        }
+                    },
+                    "required": [
+                        "sample_id",
+                        "bsq_path",
+                        "class_label",
+                        "class_id"
+                    ],
+                    "title": "TreeSampleInfo",
+                    "type": "object"
+                }
+            },
+            "description": "Tree Data Split Input Model",
+            "properties": {
+                "samples": {
+                    "description": "List of tree samples from TreeDataLoaderPiece",
+                    "items": {
+                        "$ref": "#/$defs/TreeSampleInfo"
+                    },
+                    "title": "Samples",
+                    "type": "array"
+                },
+                "n_clients": {
+                    "default": 3,
+                    "description": "Number of federated learning clients (site-1, site-2, site-3)",
+                    "maximum": 10,
+                    "minimum": 1,
+                    "title": "N Clients",
+                    "type": "integer"
+                },
+                "client_names": {
+                    "default": "site-1,site-2,site-3",
+                    "description": "Comma-separated list of client names",
+                    "title": "Client Names",
+                    "type": "string"
+                },
+                "val_split": {
+                    "default": 0.2,
+                    "description": "Validation split ratio (0.0-1.0)",
+                    "maximum": 0.5,
+                    "minimum": 0.0,
+                    "title": "Val Split",
+                    "type": "number"
+                },
+                "output_dir": {
+                    "default": "/tmp/tree_datalists",
+                    "description": "Directory to save datalist CSV files",
+                    "title": "Output Dir",
+                    "type": "string"
+                },
+                "random_seed": {
+                    "default": 123,
+                    "description": "Random seed for reproducible splits",
+                    "title": "Random Seed",
+                    "type": "integer"
+                }
+            },
+            "required": [
+                "samples"
+            ],
+            "title": "InputModel",
+            "type": "object"
+        },
+        "output_schema": {
+            "description": "Tree Data Split Output Model",
+            "properties": {
+                "client_datalists": {
+                    "description": "Mapping of client names to their train/val datalist paths",
+                    "title": "Client Datalists",
+                    "type": "object"
+                },
+                "split_summary": {
+                    "description": "Summary of data distribution across clients",
+                    "title": "Split Summary",
+                    "type": "object"
+                },
+                "output_dir": {
+                    "description": "Directory containing all datalist CSV files",
+                    "title": "Output Dir",
+                    "type": "string"
+                },
+                "total_samples": {
+                    "description": "Total number of samples split",
+                    "title": "Total Samples",
+                    "type": "integer"
+                }
+            },
+            "required": [
+                "client_datalists",
+                "split_summary",
+                "output_dir",
+                "total_samples"
+            ],
+            "title": "OutputModel",
+            "type": "object"
+        },
+        "secrets_schema": null
+    },
+    "TreeClassifierTrainingPiece": {
+        "name": "TreeClassifierTrainingPiece",
         "dependency": {
             "dockerfile": "Dockerfile_condistfl_trees",
             "requirements_file": null
@@ -14,7 +267,7 @@
             "Remote Sensing"
         ],
         "style": {
-            "node_label": "CondistFL Trees",
+            "node_label": "Train Classifier",
             "node_type": "default",
             "node_style": {
                 "backgroundColor": "#4CAF50"
@@ -25,51 +278,48 @@
                 "cursor": "pointer"
             }
         },
-        "description": "Trains a federated learning model for tree height classification from hyperspectral BSQ imagery using CondistFL framework. Coordinates training across 3 clients (site-1, site-2, site-3) using NVFlare with ConDist loss for class specialization.",
+        "description": "Trains a federated learning model for tree height classification from hyperspectral BSQ imagery using CondistFL framework. Coordinates training across multiple clients using NVFlare with ConDist loss for class specialization.",
         "input_schema": {
-            "description": "CondistFL Tree Classification Training Input Model",
+            "description": "Tree Classifier Training Input Model",
             "properties": {
+                "client_datalists": {
+                    "additionalProperties": {
+                        "additionalProperties": {
+                            "type": "string"
+                        },
+                        "type": "object"
+                    },
+                    "description": "Dictionary mapping client names to their train/val datalist CSV paths. Example: {'site-1': {'train': 'site-1_train_datalist.csv', 'val': 'site-1_val_datalist.csv'}}",
+                    "title": "Client Datalists",
+                    "type": "object"
+                },
                 "num_rounds": {
                     "default": 50,
                     "description": "Number of federated learning rounds",
-                    "from_upstream": "never",
                     "title": "Num Rounds",
                     "type": "integer"
                 },
                 "steps_per_round": {
                     "default": 100,
                     "description": "Training steps per round",
-                    "from_upstream": "never",
                     "title": "Steps Per Round",
                     "type": "integer"
-                },
-                "clients": {
-                    "default": "site-1,site-2,site-3",
-                    "description": "Comma-separated list of client names (site-1, site-2, site-3)",
-                    "from_upstream": "never",
-                    "title": "Clients",
-                    "type": "string"
-                },
-                "gpus": {
-                    "default": "0,1,2",
-                    "description": "Comma-separated GPU IDs to use (one per client)",
-                    "from_upstream": "never",
-                    "title": "Gpus",
-                    "type": "string"
                 },
                 "workspace_dir": {
                     "default": "/app/workspace",
                     "description": "Directory to save training workspace and results",
-                    "from_upstream": "never",
                     "title": "Workspace Dir",
                     "type": "string"
                 }
             },
+            "required": [
+                "client_datalists"
+            ],
             "title": "InputModel",
             "type": "object"
         },
         "output_schema": {
-            "description": "CondistFL Tree Classification Training Output Model",
+            "description": "Tree Classifier Training Output Model",
             "properties": {
                 "workspace_dir": {
                     "description": "Directory containing training results and models",
@@ -129,7 +379,334 @@
             "title": "OutputModel",
             "type": "object"
         },
-        "source_url": "https://github.com/Mikei-Stano/condisthisfl-trainer/tree/main/pieces/CondistFLTreesPiece",
+        "source_url": "https://github.com/Mikei-Stano/condisthisfl-trainer/tree/main/pieces/TreeClassifierTrainingPiece",
+        "secrets_schema": null
+    },
+    "TreeVisualizationPiece": {
+        "name": "TreeVisualizationPiece",
+        "dependency": {
+            "dockerfile": "Dockerfile_base",
+            "requirements_file": null
+        },
+        "tags": [
+            "Visualization",
+            "Training Metrics",
+            "Federated Learning",
+            "Analysis"
+        ],
+        "style": {
+            "node_label": "Visualize Training",
+            "node_type": "default",
+            "node_style": {
+                "backgroundColor": "#9C27B0"
+            },
+            "useIcon": false,
+            "icon_class_name": "",
+            "iconStyle": {
+                "cursor": "pointer"
+            }
+        },
+        "description": "Visualizes federated learning training results including loss curves, accuracy metrics, and per-client performance. Parses TensorBoard logs and creates plots.",
+        "input_schema": {
+            "description": "Tree Visualization Input Model",
+            "properties": {
+                "workspace_dir": {
+                    "description": "Training workspace directory containing TensorBoard logs",
+                    "title": "Workspace Dir",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "workspace_dir"
+            ],
+            "title": "InputModel",
+            "type": "object"
+        },
+        "output_schema": {
+            "description": "Tree Visualization Output Model",
+            "properties": {
+                "plot_paths": {
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "Dictionary mapping plot types to file paths. Example: {'training_loss': 'plots/loss.png', 'accuracy': 'plots/accuracy.png'}",
+                    "title": "Plot Paths",
+                    "type": "object"
+                },
+                "metrics_summary": {
+                    "additionalProperties": {
+                        "type": "number"
+                    },
+                    "description": "Summary of final training metrics. Example: {'final_train_loss': 0.25, 'final_val_accuracy': 0.89, 'best_round': 45}",
+                    "title": "Metrics Summary",
+                    "type": "object"
+                }
+            },
+            "required": [
+                "plot_paths",
+                "metrics_summary"
+            ],
+            "title": "OutputModel",
+            "type": "object"
+        },
+        "container_resources": {
+            "cpu": 1000,
+            "memory": "2048Mi",
+            "use_gpu": false
+        },
+        "source_url": "https://github.com/Mikei-Stano/condisthisfl-trainer/tree/main/pieces/TreeVisualizationPiece",
+        "secrets_schema": null
+    },
+    "TreePreprocessingPiece": {
+        "name": "TreePreprocessingPiece",
+        "dependency": {
+            "dockerfile": "Dockerfile_base",
+            "requirements_file": null
+        },
+        "tags": [
+            "preprocessing",
+            "hyperspectral",
+            "placeholder"
+        ],
+        "style": {
+            "node_label": "Preprocess",
+            "node_type": "default",
+            "node_style": {
+                "backgroundColor": "#ebebeb"
+            },
+            "useIcon": true,
+            "icon_class_name": "fa-solid:filter",
+            "iconStyle": {
+                "cursor": "pointer"
+            }
+        },
+        "title": "Tree Preprocessing",
+        "description": "Placeholder for future BSQ hyperspectral preprocessing (normalization, augmentation, filtering). Currently passes data through unchanged.",
+        "container_resources": {
+            "cpu": 100,
+            "memory": "256Mi"
+        },
+        "source_url": "https://github.com/Mikei-Stano/condisthisfl-trainer/tree/main/pieces/TreePreprocessingPiece",
+        "input_schema": {
+            "description": "Tree Preprocessing Input Model",
+            "properties": {
+                "client_datalists": {
+                    "description": "Client datalist paths from TreeDataSplitPiece",
+                    "title": "Client Datalists",
+                    "type": "object"
+                },
+                "output_dir": {
+                    "description": "Directory containing datalist files",
+                    "title": "Output Dir",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "client_datalists",
+                "output_dir"
+            ],
+            "title": "InputModel",
+            "type": "object"
+        },
+        "output_schema": {
+            "description": "Tree Preprocessing Output Model",
+            "properties": {
+                "client_datalists": {
+                    "description": "Client datalist paths (currently unchanged)",
+                    "title": "Client Datalists",
+                    "type": "object"
+                },
+                "output_dir": {
+                    "description": "Directory containing datalist files",
+                    "title": "Output Dir",
+                    "type": "string"
+                },
+                "preprocessing_applied": {
+                    "description": "Whether preprocessing was applied",
+                    "title": "Preprocessing Applied",
+                    "type": "boolean"
+                }
+            },
+            "required": [
+                "client_datalists",
+                "output_dir",
+                "preprocessing_applied"
+            ],
+            "title": "OutputModel",
+            "type": "object"
+        },
+        "secrets_schema": null
+    },
+    "TreeDataLoaderPiece": {
+        "name": "TreeDataLoaderPiece",
+        "dependency": {
+            "dockerfile": "Dockerfile_base",
+            "requirements_file": null
+        },
+        "tags": [
+            "data-loading",
+            "hyperspectral",
+            "tree-classification",
+            "preprocessing"
+        ],
+        "style": {
+            "node_label": "Load Tree Data",
+            "node_type": "default",
+            "node_style": {
+                "backgroundColor": "#ebebeb"
+            },
+            "useIcon": true,
+            "icon_class_name": "fa-solid:database",
+            "iconStyle": {
+                "cursor": "pointer"
+            }
+        },
+        "title": "Tree Data Loader",
+        "description": "Discovers and loads hyperspectral BSQ tree height classification data. Scans dataset directories and reads class labels.",
+        "container_resources": {
+            "cpu": 100,
+            "memory": "256Mi"
+        },
+        "source_url": "https://github.com/Mikei-Stano/condisthisfl-trainer/tree/main/pieces/TreeDataLoaderPiece",
+        "input_schema": {
+            "description": "Tree Data Loader Input Model",
+            "properties": {
+                "dataset_path": {
+                    "default": "/app/tree_bsq_chips_sampled",
+                    "description": "Path to tree_bsq_chips dataset directory",
+                    "title": "Dataset Path",
+                    "type": "string"
+                },
+                "labels_file": {
+                    "default": "labels_all_projects.csv",
+                    "description": "Name of labels CSV file (relative to dataset_path or absolute path)",
+                    "title": "Labels File",
+                    "type": "string"
+                }
+            },
+            "title": "InputModel",
+            "type": "object"
+        },
+        "output_schema": {
+            "$defs": {
+                "DatasetInfo": {
+                    "description": "Information about the complete dataset",
+                    "properties": {
+                        "dataset_path": {
+                            "description": "Root path to tree_bsq_chips dataset",
+                            "title": "Dataset Path",
+                            "type": "string"
+                        },
+                        "total_samples": {
+                            "description": "Total number of samples",
+                            "title": "Total Samples",
+                            "type": "integer"
+                        },
+                        "class_distribution": {
+                            "description": "Count of samples per class",
+                            "title": "Class Distribution",
+                            "type": "object"
+                        },
+                        "labels_file": {
+                            "description": "Path to labels CSV file",
+                            "title": "Labels File",
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "dataset_path",
+                        "total_samples",
+                        "class_distribution",
+                        "labels_file"
+                    ],
+                    "title": "DatasetInfo",
+                    "type": "object"
+                },
+                "TreeSampleInfo": {
+                    "description": "Information about a single tree sample",
+                    "properties": {
+                        "sample_id": {
+                            "description": "Unique identifier for the sample",
+                            "title": "Sample Id",
+                            "type": "string"
+                        },
+                        "bsq_path": {
+                            "description": "Path to BSQ hyperspectral file",
+                            "title": "Bsq Path",
+                            "type": "string"
+                        },
+                        "class_label": {
+                            "description": "Tree height class: nizka_vegetacia, stredna_vegetacia, or vysoka_vegetacia",
+                            "title": "Class Label",
+                            "type": "string"
+                        },
+                        "class_id": {
+                            "description": "Numeric class ID: 0=nizka, 1=stredna, 2=vysoka",
+                            "title": "Class Id",
+                            "type": "integer"
+                        },
+                        "project": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "default": null,
+                            "description": "Project ID (e.g., P101, P212)",
+                            "title": "Project"
+                        }
+                    },
+                    "required": [
+                        "sample_id",
+                        "bsq_path",
+                        "class_label",
+                        "class_id"
+                    ],
+                    "title": "TreeSampleInfo",
+                    "type": "object"
+                }
+            },
+            "description": "Tree Data Loader Output Model",
+            "properties": {
+                "samples": {
+                    "description": "List of discovered tree samples with BSQ paths and labels",
+                    "items": {
+                        "$ref": "#/$defs/TreeSampleInfo"
+                    },
+                    "title": "Samples",
+                    "type": "array"
+                },
+                "dataset_info": {
+                    "allOf": [
+                        {
+                            "$ref": "#/$defs/DatasetInfo"
+                        }
+                    ],
+                    "description": "Summary information about the dataset"
+                },
+                "total_samples": {
+                    "description": "Total number of samples found",
+                    "title": "Total Samples",
+                    "type": "integer"
+                },
+                "class_distribution": {
+                    "description": "Count of samples per class",
+                    "title": "Class Distribution",
+                    "type": "object"
+                }
+            },
+            "required": [
+                "samples",
+                "dataset_info",
+                "total_samples",
+                "class_distribution"
+            ],
+            "title": "OutputModel",
+            "type": "object"
+        },
         "secrets_schema": null
     }
 }

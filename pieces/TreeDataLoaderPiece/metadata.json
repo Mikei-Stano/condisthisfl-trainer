@@ -1,0 +1,23 @@
+{
+    "name": "TreeDataLoaderPiece",
+    "title": "Tree Data Loader",
+    "description": "Discovers and loads hyperspectral BSQ tree height classification data. Scans dataset directories and reads class labels.",
+    "dependency": {
+        "dockerfile": "Dockerfile_base"
+    },
+    "container_resources": {
+        "cpu": 100,
+        "memory": "256Mi"
+    },
+    "tags": [
+        "data-loading",
+        "hyperspectral",
+        "tree-classification",
+        "preprocessing"
+    ],
+    "style": {
+        "node_label": "Load Tree Data",
+        "icon_class_name": "fa-solid:database"
+    },
+    "source_url": "https://github.com/Mikei-Stano/condisthisfl-trainer"
+}

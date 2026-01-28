@@ -1,0 +1,18 @@
+{
+  "group0": {
+    "dockerfile": "Dockerfile_base",
+    "pieces": [
+      "TreeDataLoaderPiece",
+      "TreeDataSplitPiece",
+      "TreePreprocessingPiece",
+      "TreeVisualizationPiece"
+    ]
+  },
+  "group1": {
+    "dockerfile": "Dockerfile_condistfl_trees",
+    "pieces": [
+      "TreeClassifierTrainingPiece",
+      "TreeInferencePiece"
+    ]
+  }
+}

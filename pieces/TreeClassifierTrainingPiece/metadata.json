@@ -1,5 +1,5 @@
 {
-  "name": "CondistFLTreesPiece",
+  "name": "TreeClassifierTrainingPiece",
   "dependency": {
     "dockerfile": "Dockerfile_condistfl_trees"
   },
@@ -12,7 +12,7 @@
     "Remote Sensing"
   ],
   "style": {
-    "node_label": "CondistFL Trees",
+    "node_label": "Train Classifier",
     "node_type": "default",
     "node_style": {
       "backgroundColor": "#4CAF50"
@@ -20,9 +20,10 @@
     "useIcon": false,
     "icon_class_name": ""
   },
-  "description": "Trains a federated learning model for tree height classification from hyperspectral BSQ imagery using CondistFL framework. Coordinates training across 3 clients (site-1, site-2, site-3) using NVFlare with ConDist loss for class specialization.",
+  "description": "Trains a federated learning model for tree height classification from hyperspectral BSQ imagery using CondistFL framework. Coordinates training across multiple clients using NVFlare with ConDist loss for class specialization.",
   "input_schema": {
     "title": "InputModel",
+    "description": "Input parameters for federated learning training",
     "type": "object",
     "properties": {
       "num_rounds": {
@@ -65,6 +66,7 @@
   },
   "output_schema": {
     "title": "OutputModel",
+    "description": "Training results and model paths",
     "type": "object",
     "properties": {
       "workspace_dir": {
