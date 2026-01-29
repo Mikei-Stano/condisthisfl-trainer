@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field
-from typing import List
+from typing import List, Optional
 import sys
 from pathlib import Path
 sys.path.append(str(Path(__file__).parent.parent))
@@ -11,27 +11,19 @@ class InputModel(BaseModel):
     samples: List[TreeSampleInfo] = Field(
         description="List of tree samples from TreeDataLoaderPiece"
     )
-    n_clients: int = Field(
+    n_clients: Optional[int] = Field(
         default=3,
-        description="Number of federated learning clients (site-1, site-2, site-3)",
+        description="Number of federated learning clients",
         ge=1,
         le=10
     )
-    client_names: str = Field(
-        default="site-1,site-2,site-3",
-        description="Comma-separated list of client names"
-    )
-    val_split: float = Field(
+    val_split: Optional[float] = Field(
         default=0.2,
-        description="Validation split ratio (0.0-1.0)",
+        description="Validation split ratio (0.0-0.5)",
         ge=0.0,
         le=0.5
     )
-    output_dir: str = Field(
-        default="/tmp/tree_datalists",
-        description="Directory to save datalist CSV files"
-    )
-    random_seed: int = Field(
+    random_seed: Optional[int] = Field(
         default=123,
         description="Random seed for reproducible splits"
     )

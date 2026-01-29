@@ -177,38 +177,47 @@
                     "type": "array"
                 },
                 "n_clients": {
+                    "anyOf": [
+                        {
+                            "maximum": 10,
+                            "minimum": 1,
+                            "type": "integer"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
                     "default": 3,
-                    "description": "Number of federated learning clients (site-1, site-2, site-3)",
-                    "maximum": 10,
-                    "minimum": 1,
-                    "title": "N Clients",
-                    "type": "integer"
-                },
-                "client_names": {
-                    "default": "site-1,site-2,site-3",
-                    "description": "Comma-separated list of client names",
-                    "title": "Client Names",
-                    "type": "string"
+                    "description": "Number of federated learning clients",
+                    "title": "N Clients"
                 },
                 "val_split": {
+                    "anyOf": [
+                        {
+                            "maximum": 0.5,
+                            "minimum": 0.0,
+                            "type": "number"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
                     "default": 0.2,
-                    "description": "Validation split ratio (0.0-1.0)",
-                    "maximum": 0.5,
-                    "minimum": 0.0,
-                    "title": "Val Split",
-                    "type": "number"
-                },
-                "output_dir": {
-                    "default": "/tmp/tree_datalists",
-                    "description": "Directory to save datalist CSV files",
-                    "title": "Output Dir",
-                    "type": "string"
+                    "description": "Validation split ratio (0.0-0.5)",
+                    "title": "Val Split"
                 },
                 "random_seed": {
+                    "anyOf": [
+                        {
+                            "type": "integer"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
                     "default": 123,
                     "description": "Random seed for reproducible splits",
-                    "title": "Random Seed",
-                    "type": "integer"
+                    "title": "Random Seed"
                 }
             },
             "required": [

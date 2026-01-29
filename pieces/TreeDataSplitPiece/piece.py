@@ -24,11 +24,13 @@ class TreeDataSplitPiece(BasePiece):
         self.logger.info("=" * 60)
         
         samples = input_data.samples
-        n_clients = input_data.n_clients
-        client_names = [c.strip() for c in input_data.client_names.split(',')]
-        val_split = input_data.val_split
-        output_dir = Path(input_data.output_dir)
-        seed = input_data.random_seed
+        n_clients = input_data.n_clients or 3
+        val_split = input_data.val_split or 0.2
+        seed = input_data.random_seed or 123
+        
+        # Generate client names
+        client_names = [f"site-{i+1}" for i in range(n_clients)]
+        output_dir = Path("/tmp/tree_datalists")
         
         self.logger.info(f"Input configuration:")
         self.logger.info(f"  Total samples: {len(samples)}")
