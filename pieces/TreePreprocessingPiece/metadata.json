@@ -18,36 +18,5 @@
         "node_label": "Preprocess",
         "icon_class_name": "fa-solid:filter"
     },
-    "input_schema": {
-        "title": "InputModel",
-        "description": "Input parameters for preprocessing tree data",
-        "type": "object",
-        "properties": {
-            "client_datalists": {
-                "title": "Client Datalists",
-                "description": "Dictionary mapping client names to their train/val datalist paths",
-                "type": "object"
-            }
-        },
-        "required": ["client_datalists"]
-    },
-    "output_schema": {
-        "title": "OutputModel",
-        "description": "Preprocessed client datalist paths",
-        "type": "object",
-        "properties": {
-            "client_datalists": {
-                "title": "Client Datalists",
-                "description": "Dictionary mapping client names to their preprocessed datalist paths",
-                "type": "object"
-            },
-            "preprocessing_applied": {
-                "title": "Preprocessing Applied",
-                "description": "Whether preprocessing was applied",
-                "type": "boolean"
-            }
-        },
-        "required": ["client_datalists", "preprocessing_applied"]
-    },
     "source_url": "https://github.com/Mikei-Stano/condisthisfl-trainer"
 }

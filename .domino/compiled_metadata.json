@@ -24,6 +24,12 @@
             }
         },
         "description": "Runs inference on new hyperspectral BSQ files using trained tree height classification model. Loads PyTorch model and predicts tree height classes.",
+        "container_resources": {
+            "cpu": 2000,
+            "memory": "8192Mi",
+            "use_gpu": true
+        },
+        "source_url": "https://github.com/Mikei-Stano/condisthisfl-trainer/tree/main/pieces/TreeInferencePiece",
         "input_schema": {
             "description": "Tree Inference Input Model",
             "properties": {
@@ -78,12 +84,6 @@
             "title": "OutputModel",
             "type": "object"
         },
-        "container_resources": {
-            "cpu": 2000,
-            "memory": "8192Mi",
-            "use_gpu": true
-        },
-        "source_url": "https://github.com/Mikei-Stano/condisthisfl-trainer/tree/main/pieces/TreeInferencePiece",
         "secrets_schema": null
     },
     "TreeDataSplitPiece": {
@@ -116,6 +116,7 @@
             "cpu": 100,
             "memory": "256Mi"
         },
+        "source_url": "https://github.com/Mikei-Stano/condisthisfl-trainer/tree/main/pieces/TreeDataSplitPiece",
         "input_schema": {
             "$defs": {
                 "TreeSampleInfo": {
@@ -249,7 +250,6 @@
             "title": "OutputModel",
             "type": "object"
         },
-        "source_url": "https://github.com/Mikei-Stano/condisthisfl-trainer/tree/main/pieces/TreeDataSplitPiece",
         "secrets_schema": null
     },
     "TreeClassifierTrainingPiece": {
@@ -279,6 +279,12 @@
             }
         },
         "description": "Trains a federated learning model for tree height classification from hyperspectral BSQ imagery using CondistFL framework. Coordinates training across multiple clients using NVFlare with ConDist loss for class specialization.",
+        "source_url": "https://github.com/Mikei-Stano/condisthisfl-trainer/tree/main/pieces/TreeClassifierTrainingPiece",
+        "container_resources": {
+            "cpu": 4000,
+            "memory": "8192Mi",
+            "use_gpu": true
+        },
         "input_schema": {
             "description": "Tree Classifier Training Input Model",
             "properties": {
@@ -379,7 +385,6 @@
             "title": "OutputModel",
             "type": "object"
         },
-        "source_url": "https://github.com/Mikei-Stano/condisthisfl-trainer/tree/main/pieces/TreeClassifierTrainingPiece",
         "secrets_schema": null
     },
     "TreeVisualizationPiece": {
@@ -407,6 +412,12 @@
             }
         },
         "description": "Visualizes federated learning training results including loss curves, accuracy metrics, and per-client performance. Parses TensorBoard logs and creates plots.",
+        "container_resources": {
+            "cpu": 1000,
+            "memory": "2048Mi",
+            "use_gpu": false
+        },
+        "source_url": "https://github.com/Mikei-Stano/condisthisfl-trainer/tree/main/pieces/TreeVisualizationPiece",
         "input_schema": {
             "description": "Tree Visualization Input Model",
             "properties": {
@@ -449,12 +460,6 @@
             "title": "OutputModel",
             "type": "object"
         },
-        "container_resources": {
-            "cpu": 1000,
-            "memory": "2048Mi",
-            "use_gpu": false
-        },
-        "source_url": "https://github.com/Mikei-Stano/condisthisfl-trainer/tree/main/pieces/TreeVisualizationPiece",
         "secrets_schema": null
     },
     "TreePreprocessingPiece": {
@@ -486,6 +491,7 @@
             "cpu": 100,
             "memory": "256Mi"
         },
+        "source_url": "https://github.com/Mikei-Stano/condisthisfl-trainer/tree/main/pieces/TreePreprocessingPiece",
         "input_schema": {
             "description": "Tree Preprocessing Input Model",
             "properties": {
@@ -534,7 +540,6 @@
             "title": "OutputModel",
             "type": "object"
         },
-        "source_url": "https://github.com/Mikei-Stano/condisthisfl-trainer/tree/main/pieces/TreePreprocessingPiece",
         "secrets_schema": null
     },
     "TreeDataLoaderPiece": {
@@ -567,6 +572,7 @@
             "cpu": 100,
             "memory": "256Mi"
         },
+        "source_url": "https://github.com/Mikei-Stano/condisthisfl-trainer/tree/main/pieces/TreeDataLoaderPiece",
         "input_schema": {
             "description": "Tree Data Loader Input Model",
             "properties": {
@@ -706,7 +712,6 @@
             "title": "OutputModel",
             "type": "object"
         },
-        "source_url": "https://github.com/Mikei-Stano/condisthisfl-trainer/tree/main/pieces/TreeDataLoaderPiece",
         "secrets_schema": null
     }
 }

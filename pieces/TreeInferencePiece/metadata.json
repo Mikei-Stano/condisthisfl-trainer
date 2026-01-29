@@ -19,60 +19,6 @@
     "icon_class_name": ""
   },
   "description": "Runs inference on new hyperspectral BSQ files using trained tree height classification model. Loads PyTorch model and predicts tree height classes.",
-  "input_schema": {
-    "title": "InputModel",
-    "description": "Input parameters for running inference on BSQ files",
-    "type": "object",
-    "properties": {
-      "model_path": {
-        "title": "Model Path",
-        "description": "Path to trained PyTorch model (.pt file)",
-        "type": "string"
-      },
-      "input_bsq_paths": {
-        "title": "Input Bsq Paths",
-        "description": "List of BSQ file paths to run inference on",
-        "type": "array",
-        "items": {
-          "type": "string"
-        }
-      },
-      "batch_size": {
-        "title": "Batch Size",
-        "description": "Inference batch size",
-        "default": 32,
-        "type": "integer"
-      }
-    },
-    "required": [
-      "model_path",
-      "input_bsq_paths"
-    ]
-  },
-  "output_schema": {
-    "title": "OutputModel",
-    "description": "Inference predictions and results",
-    "type": "object",
-    "properties": {
-      "predictions": {
-        "title": "Predictions",
-        "description": "List of predictions for each input file",
-        "type": "array",
-        "items": {
-          "type": "object"
-        }
-      },
-      "predictions_csv": {
-        "title": "Predictions Csv",
-        "description": "Path to CSV file with all predictions",
-        "type": "string"
-      }
-    },
-    "required": [
-      "predictions",
-      "predictions_csv"
-    ]
-  },
   "container_resources": {
     "cpu": 2000,
     "memory": "8192Mi",

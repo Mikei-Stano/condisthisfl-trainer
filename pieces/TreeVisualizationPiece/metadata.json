@@ -19,42 +19,6 @@
     "icon_class_name": ""
   },
   "description": "Visualizes federated learning training results including loss curves, accuracy metrics, and per-client performance. Parses TensorBoard logs and creates plots.",
-  "input_schema": {
-    "title": "InputModel",
-    "description": "Input parameters for visualizing training results",
-    "type": "object",
-    "properties": {
-      "workspace_dir": {
-        "title": "Workspace Dir",
-        "description": "Training workspace directory containing TensorBoard logs",
-        "type": "string"
-      }
-    },
-    "required": [
-      "workspace_dir"
-    ]
-  },
-  "output_schema": {
-    "title": "OutputModel",
-    "description": "Visualization plots and metrics summary",
-    "type": "object",
-    "properties": {
-      "plot_paths": {
-        "title": "Plot Paths",
-        "description": "Dictionary mapping plot types to file paths",
-        "type": "object"
-      },
-      "metrics_summary": {
-        "title": "Metrics Summary",
-        "description": "Summary of final training metrics",
-        "type": "object"
-      }
-    },
-    "required": [
-      "plot_paths",
-      "metrics_summary"
-    ]
-  },
   "container_resources": {
     "cpu": 1000,
     "memory": "2048Mi",

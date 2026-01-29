@@ -19,38 +19,5 @@
         "node_label": "Load Tree Data",
         "icon_class_name": "fa-solid:database"
     },
-    "input_schema": {
-        "title": "InputModel",
-        "description": "Input parameters for loading tree classification data",
-        "type": "object",
-        "properties": {
-            "data_dir": {
-                "title": "Data Dir",
-                "description": "Path to tree_bsq_chips_sampled directory",
-                "default": "/app/tree_bsq_chips_sampled",
-                "type": "string"
-            }
-        },
-        "required": []
-    },
-    "output_schema": {
-        "title": "OutputModel",
-        "description": "Loaded tree sample data and dataset information",
-        "type": "object",
-        "properties": {
-            "tree_samples": {
-                "title": "Tree Samples",
-                "description": "List of tree sample information",
-                "type": "array",
-                "items": {"type": "object"}
-            },
-            "dataset_info": {
-                "title": "Dataset Info",
-                "description": "Dataset summary information",
-                "type": "object"
-            }
-        },
-        "required": ["tree_samples", "dataset_info"]
-    },
     "source_url": "https://github.com/Mikei-Stano/condisthisfl-trainer"
 }
