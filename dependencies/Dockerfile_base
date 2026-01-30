@@ -12,6 +12,7 @@ RUN apt-get update && apt-get install -y \
 RUN pip install --no-cache-dir \
     domino-py \
     PyGithub \
+    kubernetes \
     pandas==2.0.3 \
     numpy==1.24.3 \
     matplotlib==3.7.2
