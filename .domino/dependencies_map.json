@@ -9,7 +9,7 @@
             "TreeClassifierTrainingPiece"
         ],
         "secrets": [],
-        "source_image": "ghcr.io/mikei-stano/condisthisfl-trainer:v0.1.2-group0"
+        "source_image": "ghcr.io/mikei-stano/condisthisfl-trainer:v0.1.5-group0"
     },
     "group1": {
         "dependency": {
@@ -23,6 +23,6 @@
             "TreeDataLoaderPiece"
         ],
         "secrets": [],
-        "source_image": "ghcr.io/mikei-stano/condisthisfl-trainer:v0.1.2-group1"
+        "source_image": "ghcr.io/mikei-stano/condisthisfl-trainer:v0.1.5-group1"
     }
 }

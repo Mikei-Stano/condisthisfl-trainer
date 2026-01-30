@@ -177,47 +177,26 @@
                     "type": "array"
                 },
                 "n_clients": {
-                    "anyOf": [
-                        {
-                            "maximum": 10,
-                            "minimum": 1,
-                            "type": "integer"
-                        },
-                        {
-                            "type": "null"
-                        }
-                    ],
                     "default": 3,
                     "description": "Number of federated learning clients",
-                    "title": "N Clients"
+                    "maximum": 10,
+                    "minimum": 1,
+                    "title": "N Clients",
+                    "type": "integer"
                 },
                 "val_split": {
-                    "anyOf": [
-                        {
-                            "maximum": 0.5,
-                            "minimum": 0.0,
-                            "type": "number"
-                        },
-                        {
-                            "type": "null"
-                        }
-                    ],
                     "default": 0.2,
                     "description": "Validation split ratio (0.0-0.5)",
-                    "title": "Val Split"
+                    "maximum": 0.5,
+                    "minimum": 0.0,
+                    "title": "Val Split",
+                    "type": "number"
                 },
                 "random_seed": {
-                    "anyOf": [
-                        {
-                            "type": "integer"
-                        },
-                        {
-                            "type": "null"
-                        }
-                    ],
                     "default": 123,
                     "description": "Random seed for reproducible splits",
-                    "title": "Random Seed"
+                    "title": "Random Seed",
+                    "type": "integer"
                 }
             },
             "required": [
@@ -230,6 +209,9 @@
             "description": "Tree Data Split Output Model",
             "properties": {
                 "client_datalists": {
+                    "additionalProperties": {
+                        "type": "string"
+                    },
                     "description": "Mapping of client names to their train/val datalist paths",
                     "title": "Client Datalists",
                     "type": "object"
@@ -505,6 +487,9 @@
             "description": "Tree Preprocessing Input Model",
             "properties": {
                 "client_datalists": {
+                    "additionalProperties": {
+                        "type": "string"
+                    },
                     "description": "Client datalist paths from TreeDataSplitPiece",
                     "title": "Client Datalists",
                     "type": "object"
@@ -576,7 +561,7 @@
             }
         },
         "title": "Tree Data Loader",
-        "description": "Discovers and loads hyperspectral BSQ tree height classification data. Scans dataset directories and reads class labels.",
+        "description": "Discovers and loads hyperspectral BSQ tree height classification data.\nScans dataset directories and reads class labels.",
         "container_resources": {
             "cpu": 100,
             "memory": "256Mi"

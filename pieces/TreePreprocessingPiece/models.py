@@ -1,9 +1,10 @@
 from pydantic import BaseModel, Field
+from typing import Dict
 
 
 class InputModel(BaseModel):
     """Tree Preprocessing Input Model"""
-    client_datalists: dict = Field(
+    client_datalists: Dict[str, str] = Field(
         description="Client datalist paths from TreeDataSplitPiece"
     )
     output_dir: str = Field(

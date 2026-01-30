@@ -11,7 +11,8 @@ RUN pip install "pip==25.3" && \
         "prettytable==3.17.0" \
         "ruamel.yaml==0.18.16" \
         "codecarbon==2.3.0" \
-        "domino-py[cli]>=0.9.0"
+        "domino-py[cli]>=0.9.0" \
+        "PyGithub"
 
 # Set working directory
 WORKDIR /app

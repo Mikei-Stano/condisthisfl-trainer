@@ -24,9 +24,9 @@ class TreeDataSplitPiece(BasePiece):
         self.logger.info("=" * 60)
         
         samples = input_data.samples
-        n_clients = input_data.n_clients or 3
-        val_split = input_data.val_split or 0.2
-        seed = input_data.random_seed or 123
+        n_clients = input_data.n_clients
+        val_split = input_data.val_split
+        seed = input_data.random_seed
         
         # Generate client names
         client_names = [f"site-{i+1}" for i in range(n_clients)]
